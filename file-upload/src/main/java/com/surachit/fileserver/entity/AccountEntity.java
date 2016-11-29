@@ -1,0 +1,113 @@
+package com.surachit.fileserver.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user")
+public class AccountEntity {
+
+	@Id
+	@Column(name = "username", nullable = false)
+	private String username;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Column(name = "role_id", nullable = false)
+	private RoleEntity role;
+
+	@Column(name = "branch_id", nullable = false)
+	private int branchId;
+
+	@Column(name = "session_id")
+	private String sessionId;
+
+	@Column(name = "password", nullable = false)
+	private String password;
+
+	@Column(name = "name", nullable = false)
+	private String name;
+
+	@Column(name = "surname", nullable = false)
+	private String surname;
+
+	@Column(name = "email")
+	private String email;
+
+	protected AccountEntity() {
+
+	}
+
+	public AccountEntity(String username, String password, RoleEntity role) {
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public RoleEntity getRole() {
+		return role;
+	}
+
+	public void setRole(RoleEntity role) {
+		this.role = role;
+	}
+
+	public int getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+}
