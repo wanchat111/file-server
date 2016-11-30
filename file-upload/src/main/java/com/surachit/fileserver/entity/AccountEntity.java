@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -16,7 +17,7 @@ public class AccountEntity {
 	private String username;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Column(name = "role_id", nullable = false)
+	@JoinColumn(name = "role_id", nullable = false)
 	private RoleEntity role;
 
 	@Column(name = "branch_id", nullable = false)

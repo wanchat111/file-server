@@ -1,4 +1,4 @@
-package com.surachit.fileserver.file_upload;
+package com.surachit.fileserver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
