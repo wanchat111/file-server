@@ -20,8 +20,9 @@ public class AccountEntity {
 	@JoinColumn(name = "role_id", nullable = false)
 	private RoleEntity role;
 
-	@Column(name = "branch_id", nullable = false)
-	private int branchId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "branch_id", nullable = false)
+	private BranchEntity branch;
 
 	@Column(name = "session_id")
 	private String sessionId;
@@ -42,34 +43,27 @@ public class AccountEntity {
 
 	}
 
-	public AccountEntity(String username, String password, RoleEntity role) {
+	public AccountEntity(String username, String password, RoleEntity role, BranchEntity branch) {
 		this.username = username;
 		this.password = password;
 		this.role = role;
+		this.branch = branch;
 	}
 
 	public String getUsername() {
 		return username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public RoleEntity getRole() {
-		return role;
-	}
-
 	public void setRole(RoleEntity role) {
 		this.role = role;
 	}
 
-	public int getBranchId() {
-		return branchId;
+	public BranchEntity getBranch() {
+		return branch;
 	}
 
-	public void setBranchId(int branchId) {
-		this.branchId = branchId;
+	public void setBranch(BranchEntity branch) {
+		this.branch = branch;
 	}
 
 	public String getSessionId() {
@@ -111,4 +105,13 @@ public class AccountEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public RoleEntity getRole() {
+		return role;
+	}
+
 }
