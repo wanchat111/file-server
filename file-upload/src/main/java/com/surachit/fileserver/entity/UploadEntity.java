@@ -2,27 +2,35 @@ package com.surachit.fileserver.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "file_upload")
 
 public class UploadEntity {
 	@Id
+	@GeneratedValue
 	@Column(name = "upload_id", nullable = false)
 	private int uploadId;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "file_id", nullable = false)
 	private FileEntity file;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "username", nullable = false)
 	private AccountEntity username;
 	
@@ -45,7 +53,7 @@ public class UploadEntity {
 
 	}
 	
-	public UploadEntity(int uploadId, FileEntity file, AccountEntity username ) {
+	public UploadEntity(FileEntity file, AccountEntity username ) {
 		super();
 		this.file = file;
 		this.username = username;

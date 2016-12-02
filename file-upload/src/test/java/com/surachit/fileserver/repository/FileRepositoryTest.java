@@ -26,7 +26,7 @@ public class FileRepositoryTest extends AbstractTest {
 		FileEntity testCreate = fileRepo.findOne(i);
 		Assert.assertEquals("test", testCreate.getFileName());
 		
-		//delete user
+		//delete file
 		fileRepo.delete(testCreate);
 		FileEntity testDelete = fileRepo.findOne(i);
 		Assert.assertNull(testDelete);		
