@@ -28,6 +28,7 @@ public class AccountRepositoryTest extends AbstractTest {
 		account.setName(username);
 		account.setSurname(username);
 		accountRepo.save(account);
+		
 		AccountEntity testCreate = accountRepo.findOne("test");
 		Assert.assertEquals("test", testCreate.getName());
 		Assert.assertEquals("test@test.com", testCreate.getEmail());
