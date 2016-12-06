@@ -66,10 +66,10 @@ public class AccountService {
 
 	String hashPassword(String password) {
 		try {
-			MessageDigest m = MessageDigest.getInstance("MD5");
-			m.reset();
-			m.update(password.getBytes());
-			byte[] digest = m.digest();
+			MessageDigest message = MessageDigest.getInstance("MD5");
+			message.reset();
+			message.update(password.getBytes());
+			byte[] digest = message.digest();
 			BigInteger bigInt = new BigInteger(1, digest);
 			String hashText = bigInt.toString();
 			while (hashText.length() < 32) {
@@ -106,7 +106,7 @@ public class AccountService {
 		logger.debug("Update role of Account {}", userNameSelect);
 		AccountEntity accountEntity = accountRepo.findOne(userNameSelect);
 		if (accountEntity == null) {
-			throw new NotFound("No accound found");
+			throw new NotFound("No account found");
 		}
 
 		accountEntity.setName(accountDto.getName());
@@ -117,7 +117,7 @@ public class AccountService {
 	}
 
 	@Transactional
-	public String signIn(String userName, String Password) {
+	public String signIn(String userName, String password) {
 		logger.debug("signing in account {}", userName);
 		AccountEntity accountEntity = accountRepo.findOne(userName);
 		if (accountEntity == null) {
@@ -125,16 +125,19 @@ public class AccountService {
 			throw new NotFound("Not found account");
 		} else {
 			logger.debug("Account {} found", userName);
-			String currentSession = accountEntity.getSessionId();
-			boolean sessionActive = false;
-			if (!StringUtils.isEmpty(currentSession)) {
-
-				sessionActive = true;
+			if (hashPassword(password).equals(accountEntity.getPassword())) {
+				String currentSession = accountEntity.getSessionId();
+				boolean sessionActive = false;
+				if (!StringUtils.isEmpty(currentSession)) {
+					sessionActive = true;
+				}
+				if (sessionActive) {
+					throw new Unauthorized("An active session for this user already exists");
+				}
+			} else {
+				throw new Unauthorized("The password is wrong");
 			}
 
-			if (sessionActive) {
-				throw new Unauthorized("An active session for this user already exists");
-			}
 		}
 		return saveSession(accountEntity);
 	}
@@ -149,7 +152,7 @@ public class AccountService {
 	@Transactional
 	public void signOut(String userNameSelect) {
 		AccountEntity accountEntity = accountRepo.findOne(userNameSelect);
-		if(accountEntity == null) {
+		if (accountEntity == null) {
 			throw new NotFound("No account " + userNameSelect + " found");
 		} else {
 			accountEntity.setSessionId(null);
