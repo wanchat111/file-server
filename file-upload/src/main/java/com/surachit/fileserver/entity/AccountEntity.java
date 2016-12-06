@@ -16,11 +16,11 @@ public class AccountEntity {
 	@Column(name = "username", nullable = false)
 	private String username;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn(name = "role_id", nullable = false)
 	private RoleEntity role;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn(name = "branch_id", nullable = false)
 	private BranchEntity branch;
 

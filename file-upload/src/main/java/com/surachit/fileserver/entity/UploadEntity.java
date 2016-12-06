@@ -75,7 +75,7 @@ public class UploadEntity {
 		this.file = file;
 	}
 
-	public AccountEntity getUsername() {
+	public AccountEntity getAccount() {
 		return username;
 	}
 
