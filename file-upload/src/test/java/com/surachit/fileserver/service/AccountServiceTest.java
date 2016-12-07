@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.security.NoSuchAlgorithmException;
-
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +85,7 @@ public class AccountServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void can_update_account() throws NoSuchAlgorithmException {
+	public void can_update_account() {
 		AccountDto accountDto = new AccountDto();
 		accountDto.setUserName(USERNAME);
 		accountDto.setPassword(PASSWORD);
