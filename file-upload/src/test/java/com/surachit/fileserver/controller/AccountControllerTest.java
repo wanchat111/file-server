@@ -79,6 +79,7 @@ public class AccountControllerTest extends AbstractTest {
 		AccountEntity arg0 = accountRepository.findOne(USERNAME);
 		AccountEntity arg1 = accountRepository.findOne(USERNAME + 1);
 		AccountEntity arg2 = accountRepository.findOne(USERNAME + 2);
+		AccountEntity argAdmin = accountRepository.findOne(USERNAMEADMIN);
 		if (arg0 != null) {
 			accountRepository.delete(arg0);
 		}
@@ -88,7 +89,9 @@ public class AccountControllerTest extends AbstractTest {
 		if (arg2 != null) {
 			accountRepository.delete(arg2);
 		}
-
+		if (arg2 != null) {
+			accountRepository.delete(argAdmin);
+		}
 	}
 
 	@Test
@@ -149,7 +152,7 @@ public class AccountControllerTest extends AbstractTest {
 				.header("Authentication", activeAccount.getUsername() + ";" + activeAccount.getSessionId())
 				.contentType(MediaType.APPLICATION_JSON).content(requestBody)).andDo(print())
 				.andExpect(status().isCreated());
-		accountRepository.delete(activeAccount);
+		
 	}
 
 	@Test
@@ -172,7 +175,7 @@ public class AccountControllerTest extends AbstractTest {
 		AccountEntity deletedAccount = accountRepository.findOne(USERNAME);
 		// check expected result
 		assertNull(deletedAccount);
-		accountRepository.delete(activeAccount);
+		
 	}
 	
 	@Test
@@ -199,7 +202,7 @@ public class AccountControllerTest extends AbstractTest {
         assertEquals("update", updatedAccount.getName());
         assertEquals("update", updatedAccount.getSurname());
         assertEquals("update@test.com", updatedAccount.getEmail());
-        accountRepository.delete(activeAccount);
+        
     }
 	
 	@Test
