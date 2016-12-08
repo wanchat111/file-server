@@ -2,6 +2,7 @@ package com.surachit.fileserver.service;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.List;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -11,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -62,9 +66,10 @@ public class AccountService {
 	public boolean verifyProposedUsername(String userName) {
 		String namingRules = "^\\w{" + minUserNameLenth + ",}$";
 		return userName.matches(namingRules);
+
 	}
 
-	String hashPassword(String password) {
+	public String hashPassword(String password) {
 		try {
 			MessageDigest message = MessageDigest.getInstance("MD5");
 			message.reset();
@@ -158,5 +163,45 @@ public class AccountService {
 			accountEntity.setSessionId(null);
 			accountRepo.save(accountEntity);
 		}
+	}
+
+	@Transactional
+	public AccountDto getAccount(String userName) {
+		logger.debug("Getting account {}", userName);
+		if (StringUtils.isEmpty(userName)) {
+			throw new BadRequest("userName cannot be null or empty");
+		}
+
+		// return arp.findOne(userName);
+		AccountEntity accountEntity = accountRepo.findOne(userName);
+		if (accountEntity == null) {
+			return null;
+		} else {
+			return new AccountDto(accountEntity);
+		}
+	}
+
+	@Transactional
+	public Page<AccountEntity> getListAccount(int page, int limit) throws NotFound {
+		logger.debug("Method getAccount {} {} ", page, limit);
+
+		PageRequest pageRequest = new PageRequest(page - 1, limit, Sort.Direction.ASC, "username");
+
+		Page<AccountEntity> accountDtoPage = accountRepo.findAll(pageRequest);
+
+		List<AccountEntity> accountEntityList = accountDtoPage.getContent();
+		if (accountEntityList.isEmpty()) {
+			logger.debug("accountEntityList is empty");
+			throw new NotFound("No account found");
+		}
+		return accountDtoPage;
+	}
+
+	public int getMinUserNameLenth() {
+		return minUserNameLenth;
+	}
+
+	public void setMinUserNameLenth(int minUserNameLenth) {
+		this.minUserNameLenth = minUserNameLenth;
 	}
 }

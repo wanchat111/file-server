@@ -15,7 +15,7 @@ import com.surachit.fileserver.exception.Unauthorized;
 import com.surachit.fileserver.repository.AccountRepository;
 
 @Service
-@ConfigurationProperties(prefix = "pushad.security")
+@ConfigurationProperties(prefix = "surachit.security")
 public class SessionService {
 
     private Logger logger = LoggerFactory.getLogger(SessionService.class);

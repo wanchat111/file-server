@@ -16,6 +16,7 @@ public class Constants {
 		public static final String URL_SIGNIN = BASE_URL + "/signin";
 		public static final String URL_SIGNOUT = BASE_URL + "/signout";
 		public static final String URL_ACCOUNT = BASE_URL + "/account";
+		public static final String URL_ACCOUNTS = BASE_URL + "/accounts";
 		
 		// Cookies
 		public static final String COOKIE_USR = "username";
