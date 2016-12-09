@@ -89,7 +89,7 @@ public class AccountControllerTest extends AbstractTest {
 		if (arg2 != null) {
 			accountRepository.delete(arg2);
 		}
-		if (arg2 != null) {
+		if (argAdmin != null) {
 			accountRepository.delete(argAdmin);
 		}
 	}

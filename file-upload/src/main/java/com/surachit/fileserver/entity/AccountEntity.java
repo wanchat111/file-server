@@ -49,6 +49,10 @@ public class AccountEntity {
 		this.role = role;
 		this.branch = branch;
 	}
+	
+	public AccountEntity(String username) {
+		this.username = username;
+	}
 
 	public String getUsername() {
 		return username;

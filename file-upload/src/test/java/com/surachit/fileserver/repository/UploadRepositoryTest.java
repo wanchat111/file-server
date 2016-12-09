@@ -14,6 +14,8 @@ import com.surachit.fileserver.entity.FileEntity;
 import com.surachit.fileserver.entity.FolderEntity;
 import com.surachit.fileserver.entity.RoleEntity;
 import com.surachit.fileserver.entity.UploadEntity;
+import com.surachit.fileserver.util.Folders;
+
 import junit.framework.Assert;
 
 public class UploadRepositoryTest extends AbstractTest {
@@ -34,7 +36,7 @@ public class UploadRepositoryTest extends AbstractTest {
 	@Test
 	public void can_crud_upload() {
 		// create user
-		FolderEntity folder = new FolderEntity("curriculum", "หลักสูตร");
+		FolderEntity folder = new FolderEntity(Folders.FOLDER_COSTS);
 		FileEntity file = new FileEntity("test2", folder);
 		String username = "newnew";
 		String password = "new";

@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
-import com.surachit.fileserver.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,10 @@ import com.surachit.fileserver.dto.AccountDto;
 import com.surachit.fileserver.entity.AccountEntity;
 import com.surachit.fileserver.entity.BranchEntity;
 import com.surachit.fileserver.entity.RoleEntity;
+import com.surachit.fileserver.exception.BadRequest;
+import com.surachit.fileserver.exception.ConflictingData;
+import com.surachit.fileserver.exception.NotFound;
+import com.surachit.fileserver.exception.Unauthorized;
 import com.surachit.fileserver.repository.AccountRepository;
 import com.surachit.fileserver.util.Roles;
 
@@ -29,7 +32,7 @@ import com.surachit.fileserver.util.Roles;
 @ConfigurationProperties(prefix = "surachit.account")
 public class AccountService {
 	private Logger logger = LoggerFactory.getLogger(AccountService.class);
-
+	
 	@Autowired
 	private AccountRepository accountRepo;
 
@@ -204,4 +207,5 @@ public class AccountService {
 	public void setMinUserNameLenth(int minUserNameLenth) {
 		this.minUserNameLenth = minUserNameLenth;
 	}
+
 }

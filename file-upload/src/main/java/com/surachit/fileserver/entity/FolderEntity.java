@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.surachit.fileserver.util.Folders;
+
 @Entity
 @Table(name = "folder")
 public class FolderEntity {
@@ -19,10 +21,15 @@ public class FolderEntity {
 	protected FolderEntity() {
 
 	}
-
+	
 	public FolderEntity(String folderPath, String folderName) {
-		this.folderName = folderName;
 		this.folderPath = folderPath;
+		this.folderName = folderName;
+	}
+	
+	public FolderEntity(Folders folder) {
+		this.folderPath = folder.getPath();
+		this.folderName = folder.getName();
 	}
 
 	public String getFolderName() {
