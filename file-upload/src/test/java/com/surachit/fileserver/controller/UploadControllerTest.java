@@ -75,5 +75,10 @@ public class UploadControllerTest extends AbstractTest {
 			accountRepository.delete(argAdmin);
 		}
 	}
+	
+	@Test
+	public void can_run() {
+		System.out.println("555");
+	}
 
 }
