@@ -1,17 +1,25 @@
 package com.surachit.fileserver.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import org.apache.commons.compress.utils.IOUtils;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.surachit.fileserver.AbstractTest;
 import com.surachit.fileserver.dto.AccountDto;
 import com.surachit.fileserver.dto.UploadDto;
+import com.surachit.fileserver.entity.AccountEntity;
 import com.surachit.fileserver.exception.ConflictingData;
+import com.surachit.fileserver.repository.AccountRepository;
 import com.surachit.fileserver.repository.UploadRepository;
 import com.surachit.fileserver.util.Roles;
 
@@ -25,6 +33,9 @@ public class UploadServiceTest extends AbstractTest {
 	
 	@Autowired
 	private UploadRepository uploadRepository;
+	
+	@Autowired
+	private AccountRepository accountRepository;
 	
 	private static final String USERNAME = "userTest";
 	private static final String PASSWORD = "1234";
@@ -41,13 +52,16 @@ public class UploadServiceTest extends AbstractTest {
 	
 	@After
 	public void tearDown() {
-
 		
 	}
 	
 	@Test
-	public void can_create_upload() {
+	public void can_create_upload() throws IOException {
 		
+		
+		File file = new File("src/test/resources/test.pdf");
+	    FileInputStream input = new FileInputStream(file);
+	    MultipartFile multipartFile = new MockMultipartFile("filepppp", file.getName(), "application/pdf", IOUtils.toByteArray(input));
 		AccountDto accountDto = new AccountDto();
 		accountDto.setUserName(USERNAME);
 		accountDto.setPassword(PASSWORD);
@@ -71,12 +85,14 @@ public class UploadServiceTest extends AbstractTest {
 		uploadDto.setFilePath(PATH);
 		int i = 0;
 		try {
-			i = uploadService.createFileUpload(uploadDto);
+			i = uploadService.uploadFile(uploadDto, multipartFile);
+			//i = uploadService.createFileUpload(uploadDto);
 		} catch (ConflictingData e) {
 			e.printStackTrace();
 		}
 		
 		uploadRepository.delete(i);
-
+		AccountEntity accountEntity = accountRepository.findOne(USERNAME);
+		accountRepository.delete(accountEntity);
 	}
 }

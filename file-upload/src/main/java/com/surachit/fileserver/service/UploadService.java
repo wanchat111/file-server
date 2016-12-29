@@ -4,6 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.transaction.Transactional;
@@ -17,12 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.surachit.fileserver.dto.UploadDto;
-import com.surachit.fileserver.entity.AccountEntity;
 import com.surachit.fileserver.entity.FileEntity;
 import com.surachit.fileserver.entity.FolderEntity;
 import com.surachit.fileserver.entity.UploadEntity;
 import com.surachit.fileserver.exception.BadRequest;
-import com.surachit.fileserver.repository.AccountRepository;
 import com.surachit.fileserver.repository.UploadRepository;
 import com.surachit.fileserver.util.Folders;
 
@@ -36,18 +36,17 @@ public class UploadService {
 	private MultipartProperties multipartProperties;
 
 	@Autowired
-	private AccountRepository accountRepository;
-
-	@Autowired
 	private UploadRepository uploadRepository;
 
-	public int uploadFile(UploadDto uploadDto, MultipartFile file) {
+	public int uploadFile(UploadDto uploadDto, MultipartFile file) throws IOException {
 		logger.debug("Upload file {}", file.getName());
 		Long filesize = file.getSize();
 		Long maxSize = this.getMaxFileSizeUpload();
 		String directory = path + uploadDto.getFilePath();
 		String filepath = Paths.get(directory, file.getName()).toString();
-
+		Path path = Paths.get(directory);
+		Files.createDirectories(path);
+		
 		if (filesize > this.getMaxFileSizeUpload()) {
 			logger.debug("Check file size was exceed: input size is {} limit size is {}", filesize, maxSize);
 		}
@@ -61,7 +60,7 @@ public class UploadService {
 			stream.write(file.getBytes());
 			stream.close();
 		} catch (IOException e) {
-			throw new BadRequest("Upload fail");
+			throw new BadRequest("Upload fail " + e );
 		}
 		int i = createFileUpload(uploadDto);
 		return i;
@@ -88,8 +87,8 @@ public class UploadService {
 		}
 
 		FileEntity file = new FileEntity(uploadDto.getFileName(), folder);
-		AccountEntity account = accountRepository.findOne(uploadDto.getUserName());
-		UploadEntity uploadEntity = new UploadEntity(file, account);
+		//AccountEntity account = accountRepository.findOne(uploadDto.getUserName());
+		UploadEntity uploadEntity = new UploadEntity(file, uploadDto.getUserName());
 		uploadEntity.setCreateBy(uploadDto.getCreateBy());
 		uploadEntity.setCreateDate(uploadDto.getCreateDate());
 		uploadEntity.setDateModify(uploadDto.getDateModify());

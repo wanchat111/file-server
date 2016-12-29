@@ -49,8 +49,10 @@ public class UploadRepositoryTest extends AbstractTest {
 		account.setEmail("new@test.com");
 		account.setName("Nisarat");
 		account.setSurname("Kongcheep");
+		accountRepo.save(account);
 		
-		UploadEntity upload = new UploadEntity(file, account); 
+		
+		UploadEntity upload = new UploadEntity(file, username); 
 		upload.setCreateBy(username);
 		upload.setCreateDate(sqlDate);
 		upload.setDateModify(null);
@@ -63,7 +65,7 @@ public class UploadRepositoryTest extends AbstractTest {
 		assertEquals("i have a pen", testCreate.getDescription());
 		
 		//account exist
-		String usernameCheck = upload.getAccount().getUsername();
+		String usernameCheck = upload.getUsername();
 		AccountEntity accountCheck = accountRepo.findOne(usernameCheck);
 		assertEquals("new@test.com", accountCheck.getEmail());
 		
@@ -74,6 +76,8 @@ public class UploadRepositoryTest extends AbstractTest {
 		
 		//delete upload
 		uploadRepo.delete(testCreate);
+		
+		accountRepo.delete(accountCheck);
 		
 		//upload delete
 		UploadEntity testDelete = uploadRepo.findOne(i);

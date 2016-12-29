@@ -21,7 +21,7 @@ public class UploadDto {
 	}
 	
 	public UploadDto(UploadEntity uploadEntity) {
-		userName = uploadEntity.getAccount().getUsername();
+		userName = uploadEntity.getUsername();
 		fileId = uploadEntity.getFile().getFileId();
 		description = uploadEntity.getDescription();
 		createBy = uploadEntity.getCreateBy();
