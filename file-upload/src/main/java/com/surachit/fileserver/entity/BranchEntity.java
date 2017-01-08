@@ -24,6 +24,11 @@ public class BranchEntity {
 		this.branchId = branchId;
 		this.branchName = branchName;
 	}
+	
+	public BranchEntity(int branchId) {
+		this.branchId = branchId;
+
+	}
 
 	public int getBranchId() {
 		return branchId;

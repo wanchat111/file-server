@@ -34,7 +34,6 @@ public class FileEntity {
 		this.fileName = fileName;
 		this.folder = folder;
 	}
-
 	
 	public int getFileId() {
 		return fileId;

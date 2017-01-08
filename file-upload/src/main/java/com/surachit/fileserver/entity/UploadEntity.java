@@ -29,10 +29,8 @@ public class UploadEntity {
 	@JoinColumn(name = "file_id", nullable = false)
 	private FileEntity file;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JoinColumn(name = "username", nullable = false)
-	private AccountEntity username;
+	@Column(name = "username")
+	private String username;
 	
 	@Column(name = "create_by")
 	private String createBy;
@@ -53,7 +51,7 @@ public class UploadEntity {
 
 	}
 	
-	public UploadEntity(FileEntity file, AccountEntity username ) {
+	public UploadEntity(FileEntity file, String username ) {
 		super();
 		this.file = file;
 		this.username = username;
@@ -75,11 +73,12 @@ public class UploadEntity {
 		this.file = file;
 	}
 
-	public AccountEntity getAccount() {
+
+	public String getUsername() {
 		return username;
 	}
 
-	public void setUsername(AccountEntity username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 

@@ -1,5 +1,9 @@
 package com.surachit.fileserver.repository;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -13,8 +17,8 @@ import com.surachit.fileserver.entity.FileEntity;
 import com.surachit.fileserver.entity.FolderEntity;
 import com.surachit.fileserver.entity.RoleEntity;
 import com.surachit.fileserver.entity.UploadEntity;
+import com.surachit.fileserver.util.Folders;
 
-import junit.framework.Assert;
 
 public class UploadRepositoryTest extends AbstractTest {
 
@@ -34,7 +38,7 @@ public class UploadRepositoryTest extends AbstractTest {
 	@Test
 	public void can_crud_upload() {
 		// create user
-		FolderEntity folder = new FolderEntity("curriculum", "หลักสูตร");
+		FolderEntity folder = new FolderEntity(Folders.FOLDER_COSTS);
 		FileEntity file = new FileEntity("test2", folder);
 		String username = "newnew";
 		String password = "new";
@@ -45,8 +49,10 @@ public class UploadRepositoryTest extends AbstractTest {
 		account.setEmail("new@test.com");
 		account.setName("Nisarat");
 		account.setSurname("Kongcheep");
+		accountRepo.save(account);
 		
-		UploadEntity upload = new UploadEntity(file, account); 
+		
+		UploadEntity upload = new UploadEntity(file, username); 
 		upload.setCreateBy(username);
 		upload.setCreateDate(sqlDate);
 		upload.setDateModify(null);
@@ -56,34 +62,35 @@ public class UploadRepositoryTest extends AbstractTest {
 		//Check upload exist
 		int i = upload.getUploadId();
 		UploadEntity testCreate = uploadRepo.findOne(i); 
-		Assert.assertEquals("i have a pen", testCreate.getDescription());
+		assertEquals("i have a pen", testCreate.getDescription());
 		
 		//account exist
-		String usernameCheck = upload.getAccount().getUsername();
+		String usernameCheck = upload.getUsername();
 		AccountEntity accountCheck = accountRepo.findOne(usernameCheck);
-		Assert.assertEquals("new@test.com", accountCheck.getEmail());
+		assertEquals("new@test.com", accountCheck.getEmail());
 		
 		//file exist
 		int fileIdCheck = upload.getFile().getFileId();
 		FileEntity fileCheck = fileRepo.findOne(fileIdCheck);
-		Assert.assertEquals("test2", fileCheck.getFileName());
+		assertEquals("test2", fileCheck.getFileName());
 		
 		//delete upload
 		uploadRepo.delete(testCreate);
 		
+		accountRepo.delete(accountCheck);
+		
 		//upload delete
 		UploadEntity testDelete = uploadRepo.findOne(i);
-		Assert.assertNull(testDelete);		
+		assertNull(testDelete);		
 		
 		//check account delete
 		AccountEntity accountCheckDelete = accountRepo.findOne(usernameCheck);
-		Assert.assertNull(accountCheckDelete);	
+		assertNull(accountCheckDelete);	
 		
 		//check file delete
 		FileEntity fileCheckDelete = fileRepo.findOne(fileIdCheck);
-		Assert.assertNull(fileCheckDelete);	
+		assertNull(fileCheckDelete);	
 		
 		
 	}
-
 }
