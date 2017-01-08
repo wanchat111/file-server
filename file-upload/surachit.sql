@@ -1,4 +1,8 @@
 
+--
+-- Table structure for table `branch`
+--
+
 CREATE TABLE `branch` (
   `branch_id` int(11) NOT NULL,
   `branch_name` varchar(50) NOT NULL
@@ -35,7 +39,7 @@ CREATE TABLE `file` (
 --
 
 INSERT INTO `file` (`file_id`, `file_name`, `folder_path`) VALUES
-(1, 'หลักสูตรคอมพิวเตอร์พื้นฐาน2559', 'curriculum');
+(1, 'หลักสูตรวิชาคอมพิวเตอร์พื้นฐาน', 'curriculum');
 
 -- --------------------------------------------------------
 
@@ -183,12 +187,12 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `file`
 --
 ALTER TABLE `file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `file_upload`
 --
 ALTER TABLE `file_upload`
-  MODIFY `upload_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `upload_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `role`
 --
