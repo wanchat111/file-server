@@ -1,4 +1,4 @@
-package com.surchit.fileserver.interceptor;
+package com.surachit.fileserver.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
