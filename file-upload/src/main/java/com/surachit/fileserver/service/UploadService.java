@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -23,6 +24,7 @@ import com.surachit.fileserver.entity.FileEntity;
 import com.surachit.fileserver.entity.FolderEntity;
 import com.surachit.fileserver.entity.UploadEntity;
 import com.surachit.fileserver.exception.BadRequest;
+import com.surachit.fileserver.repository.FileRepository;
 import com.surachit.fileserver.repository.UploadRepository;
 import com.surachit.fileserver.util.Folders;
 
@@ -37,6 +39,8 @@ public class UploadService {
 
 	@Autowired
 	private UploadRepository uploadRepository;
+	
+	@Autowired FileRepository fileRepository;
 
 	public int uploadFile(UploadDto uploadDto, MultipartFile file) throws IOException {
 		logger.debug("Upload file {}", file.getName());
@@ -46,7 +50,7 @@ public class UploadService {
 		String filepath = Paths.get(directory, file.getName()).toString();
 		Path path = Paths.get(directory);
 		Files.createDirectories(path);
-		
+
 		if (filesize > this.getMaxFileSizeUpload()) {
 			logger.debug("Check file size was exceed: input size is {} limit size is {}", filesize, maxSize);
 		}
@@ -60,7 +64,7 @@ public class UploadService {
 			stream.write(file.getBytes());
 			stream.close();
 		} catch (IOException e) {
-			throw new BadRequest("Upload fail " + e );
+			throw new BadRequest("Upload fail " + e);
 		}
 		int i = createFileUpload(uploadDto);
 		return i;
@@ -87,7 +91,8 @@ public class UploadService {
 		}
 
 		FileEntity file = new FileEntity(uploadDto.getFileName(), folder);
-		//AccountEntity account = accountRepository.findOne(uploadDto.getUserName());
+		// AccountEntity account =
+		// accountRepository.findOne(uploadDto.getUserName());
 		UploadEntity uploadEntity = new UploadEntity(file, uploadDto.getUserName());
 		uploadEntity.setCreateBy(uploadDto.getCreateBy());
 		uploadEntity.setCreateDate(uploadDto.getCreateDate());
@@ -99,6 +104,20 @@ public class UploadService {
 
 	}
 
+	@Transactional
+	public List<UploadEntity> getFileAll() {
+		List<UploadEntity> upload = uploadRepository.findAll();
+
+		return upload;
+	}
+
+	@Transactional
+	public String getPathFile(int fileId) {
+		FileEntity file = fileRepository.findOne(fileId);
+		String pathDirectory = path + file.getFolder().getFolderPath();
+		return pathDirectory;
+	}
+	
 	public String getPath() {
 		return path;
 	}
