@@ -66,7 +66,7 @@ public class UploadController extends AbstractController {
 	}
 
 	@Secured
-	@RequestMapping(value = Constants.URL_DOWNLOAD + "{fileId}", method = RequestMethod.GET)
+	@RequestMapping(value = Constants.URL_UPLOADLIST, method = RequestMethod.GET)
 	public List<UploadEntity> getUpload() {
 		List<UploadEntity> upload = uploadService.getFileAll();
 		return upload;

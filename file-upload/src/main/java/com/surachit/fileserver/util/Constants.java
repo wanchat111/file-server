@@ -19,6 +19,7 @@ public class Constants {
 		public static final String URL_ACCOUNTS = BASE_URL + "/accounts";
 		public static final String URL_UPLOAD = BASE_URL + "/upload";
 		public static final String URL_DOWNLOAD = BASE_URL + "/download";
+		public static final String URL_UPLOADLIST = BASE_URL + "/listuploads";
 		
 		// Cookies
 		public static final String COOKIE_USR = "username";
