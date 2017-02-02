@@ -78,12 +78,11 @@ public class AccountController extends AbstractController{
 		return token;
     }
     
-    @RequestMapping(value = Constants.URL_SIGNOUT, method = RequestMethod.POST)
-	public void signOut(
-			@CookieValue(value = Constants.COOKIE_USR, defaultValue = "") String userName,
-			@CookieValue(value = Constants.COOKIE_TKN, defaultValue = "") String sessionId) {
+    @RequestMapping(value = Constants.URL_SIGNOUT + "/{username}/{sessionId}", method = RequestMethod.GET)
+	public void signOut(@PathVariable(value="username") String userName,
+			@PathVariable(value="sessionId") String sessionId) {
 
-		logger.debug("Got sign out request for user {}", userName);
+		logger.info("Got sign out request for user {}", userName);
 		sessionService.validateSession(userName, sessionId);
 		accountService.signOut(userName);
 	}
