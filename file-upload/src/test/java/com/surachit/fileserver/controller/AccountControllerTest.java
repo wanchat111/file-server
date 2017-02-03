@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.surachit.fileserver.AbstractTest;
 import com.surachit.fileserver.dto.AccountDto;
 import com.surachit.fileserver.entity.AccountEntity;
@@ -118,15 +119,28 @@ public class AccountControllerTest extends AbstractTest {
 	}
 
 	@Test
-	public void can_sign_out() {
+	public void can_sign_out() throws Exception {
 		HttpHeaders header = new HttpHeaders();
 		AccountEntity accountEntity = accountRepository.findOne(USERNAME);
-		header.add(HttpHeaders.COOKIE, Constants.COOKIE_USR + "=" + USERNAME);
-		header.add(HttpHeaders.COOKIE, Constants.COOKIE_TKN + "=" + accountEntity.getSessionId());
-		HttpEntity<String> req = new HttpEntity<>(header);
-		ResponseEntity<String> resp = rtp.exchange(baseUrl + Constants.URL_SIGNOUT, HttpMethod.POST, req, String.class);
+		//header.add(HttpHeaders.COOKIE, Constants.COOKIE_USR + "=" + USERNAME);
+		//header.add(HttpHeaders.COOKIE, Constants.COOKIE_TKN + "=" + accountEntity.getSessionId());
+		//HttpEntity<String> req = new HttpEntity<>(header);
+		//ResponseEntity<String> resp = rtp.exchange(baseUrl + Constants.URL_SIGNOUT, HttpMethod.GET, req, String.class);
+		//AccountEntity accountEntity = accountRepository.findOne(USERNAME);
+		byte[] requestBody = printJson(accountEntity);
+		RoleEntity role = new RoleEntity(Roles.SYS_ACCOUNT_ADMIN.getRoleId(),
+                Roles.SYS_ACCOUNT_ADMIN.getRoleName());
+        BranchEntity branch = new BranchEntity(1);
+		AccountEntity activeAccount = testHelper.i_have_active_account(USERNAMEADMIN, role, branch);
+		mockMvc
+        .perform(get(Constants.URL_SIGNOUT + "/" + USERNAME + "/" + accountEntity.getSessionId())
+                .header("Authentication",
+                        activeAccount.getUsername() + ";"
+                                + activeAccount.getSessionId())
+                .contentType(MediaType.APPLICATION_JSON).content(requestBody))
+        .andDo(print()).andExpect(status().is2xxSuccessful());
 
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		//assertEquals(HttpStatus.OK, resp.getStatusCode());
 	}
 
 	@Test
