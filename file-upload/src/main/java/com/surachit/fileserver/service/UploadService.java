@@ -114,7 +114,8 @@ public class UploadService {
 	@Transactional
 	public String getPathFile(int fileId) {
 		FileEntity file = fileRepository.findOne(fileId);
-		String pathDirectory = path + file.getFolder().getFolderPath();
+		String fileName = file.getFileName();
+		String pathDirectory = path + file.getFolder().getFolderPath() +"/"+ fileName;
 		return pathDirectory;
 	}
 	

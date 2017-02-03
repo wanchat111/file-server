@@ -141,7 +141,7 @@ public class AccountController extends AbstractController{
     @Secured(permission = "admin")
     @RequestMapping(value = Constants.URL_ACCOUNT + "/{userName}", method = RequestMethod.PUT)
     public Response<Void> updateAccount(
-            @PathVariable("userName") String userAccountName,
+            @PathVariable(value = "userName") String userAccountName,
             @RequestBody(required = true) AccountDto accountDto)
             throws NotFound, BadRequest {
 

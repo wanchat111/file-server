@@ -47,8 +47,9 @@ public class UploadController extends AbstractController {
 	}
 
 	@Secured
-	@RequestMapping(value = Constants.URL_DOWNLOAD + "{fileId}", method = RequestMethod.GET)
-	public void downloadFile(@PathVariable int fileId, HttpServletResponse response) throws IOException {
+	@RequestMapping(value = Constants.URL_DOWNLOAD + "/{fileId}", method = RequestMethod.GET)
+	public void downloadFile(@PathVariable (value = "fileId") int fileId, HttpServletResponse response) throws IOException {
+		logger.info("fileId : {}", fileId);
 		try {
 			String fullPath = uploadService.getPathFile(fileId);
 			File file = new File(fullPath);
@@ -68,7 +69,13 @@ public class UploadController extends AbstractController {
 	@Secured
 	@RequestMapping(value = Constants.URL_UPLOADLIST, method = RequestMethod.GET)
 	public List<UploadEntity> getUpload() {
+		
+		logger.info("getUpload");
+		
 		List<UploadEntity> upload = uploadService.getFileAll();
+		
+		logger.info("upload : {}", upload);
+		
 		return upload;
 	}
 }
