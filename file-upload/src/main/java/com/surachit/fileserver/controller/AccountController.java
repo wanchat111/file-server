@@ -70,7 +70,7 @@ public class AccountController extends AbstractController{
 		String userName = values[0];
 		String password = values[1];
 
-		logger.debug("Got sign in request for account {}", userName);
+		logger.info("Got sign in request for account {}", userName);
 		String sessionId = accountService.signIn(userName, password);
 		Map<String, String> token = new HashMap<String, String>();
 		token.put(Constants.COOKIE_TKN, sessionId);

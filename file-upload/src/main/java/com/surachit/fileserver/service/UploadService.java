@@ -43,16 +43,17 @@ public class UploadService {
 	@Autowired FileRepository fileRepository;
 
 	public int uploadFile(UploadDto uploadDto, MultipartFile file) throws IOException {
-		logger.debug("Upload file {}", file.getName());
+		logger.info("Upload file {}", file.getName());
 		Long filesize = file.getSize();
 		Long maxSize = this.getMaxFileSizeUpload();
 		String directory = path + uploadDto.getFilePath();
-		String filepath = Paths.get(directory, file.getName()).toString();
+		String filepath = Paths.get(directory, uploadDto.getFileName()).toString();
 		Path path = Paths.get(directory);
 		Files.createDirectories(path);
 
+		logger.info("this is a path file {}", filepath);
 		if (filesize > this.getMaxFileSizeUpload()) {
-			logger.debug("Check file size was exceed: input size is {} limit size is {}", filesize, maxSize);
+			logger.info("Check file size was exceed: input size is {} limit size is {}", filesize, maxSize);
 		}
 
 		if (file.isEmpty()) {
@@ -116,6 +117,7 @@ public class UploadService {
 		FileEntity file = fileRepository.findOne(fileId);
 		String fileName = file.getFileName();
 		String pathDirectory = path + file.getFolder().getFolderPath() +"/"+ fileName;
+		logger.info("this is file path {}", pathDirectory);
 		return pathDirectory;
 	}
 	

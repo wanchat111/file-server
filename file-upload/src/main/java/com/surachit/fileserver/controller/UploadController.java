@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.surachit.fileserver.dto.UploadDto;
 import com.surachit.fileserver.entity.UploadEntity;
 import com.surachit.fileserver.response.Response;
@@ -40,10 +42,15 @@ public class UploadController extends AbstractController {
 	@Secured
 	@RequestMapping(value = Constants.URL_UPLOAD, method = RequestMethod.POST)
 	public HttpEntity<Response<Integer>> handleFileUpload(
-			@RequestPart(value = "uploadDto", required = true) UploadDto uploadDto,
+			@RequestParam(value = "uploadDto", required = true) String uploadDto,
 			@RequestParam(value = "file", required = true) MultipartFile file) throws IOException {
 
-		int idSuccess = uploadService.uploadFile(uploadDto, file);
+		logger.info("this is test");
+		logger.info("this is {}", uploadDto);
+		ObjectMapper json = new ObjectMapper();
+		UploadDto uploadDTO = json.readValue(uploadDto, UploadDto.class);
+
+		int idSuccess = uploadService.uploadFile(uploadDTO, file);
 		return new ResponseEntity<>(returnWithSuccess(idSuccess), HttpStatus.OK);
 	}
 
@@ -53,6 +60,7 @@ public class UploadController extends AbstractController {
 		logger.info("fileId : {}", fileId);
 		try {
 			String fullPath = uploadService.getPathFile(fileId);
+			logger.info("this is path for download {}", fullPath);
 			File file = new File(fullPath);
 			InputStream inputStream = new FileInputStream(file);
 			response.setContentType("application/pdf");
